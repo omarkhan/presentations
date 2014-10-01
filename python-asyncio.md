@@ -10,6 +10,14 @@ author:
 
 --
 
+### @\_\_omar\_\_
+
+- Python developer for the last 8 years
+- Made heavy use of gevent in my last job at [Arachnys](https://www.arachnys.com/)
+- Never used tulip for real stuff (nobody has - yet)
+
+--
+
 # What is async IO?
 
 --
@@ -94,6 +102,10 @@ Done: http://github.com/
 
 --
 
+# Threads
+
+--
+
 ### Threads
 
 ```python
@@ -151,3 +163,158 @@ Done: http://python.org/
 
 - Scheduled by the operating system
 - Share memory and other resources
+
+--
+
+### Problems with threads
+
+- Number of threads limited by OS
+- Shared memory
+- Synchronisation: locks etc.
+- The GIL (Global Interpreter Lock)
+
+--
+
+# Processes
+
+--
+
+### Processes
+
+```python
+from concurrent.futures import ProcessPoolExecutor
+import requests
+
+urls = ['http://python.org/',
+        'http://www.pocketplaylab.com/',
+        'http://github.com/']
+
+def download(url):
+    print('Downloading: ' + url)
+    requests.get(url)
+    print('Done: ' + url)
+
+with ProcessPoolExecutor(max_workers=10) as process_pool:
+    for url in urls:
+        process_pool.submit(download, url)
+```
+
+--
+
+### Processes
+
+- Like threads, but without a shared memory space
+- No GIL - good for CPU-bound tasks
+
+--
+
+### Problems with processes
+
+- High per-process overhead
+- Message-passing overhead
+
+--
+
+# Evented IO
+
+--
+
+### Evented IO
+
+- Event loop
+  - libevent
+  - libev
+  - libuv
+- Callbacks
+- Easier to synchronise
+  - Callbacks explicitly yield control to the main loop
+
+--
+
+# gevent
+
+--
+
+### gevent
+
+- Fast event loop based on libev
+- Lightweight execution units based on greenlet
+- Monkey patching utility
+- Python 2 only
+
+--
+
+### gevent
+
+```python
+# Monkey-patch the standard library
+from gevent import monkey; monkey.patch_all()
+
+from gevent.pool import Pool
+import requests
+
+urls = ['http://python.org/',
+        'http://www.pocketplaylab.com/',
+        'http://github.com/']
+
+def download(url):
+    print('Downloading: ' + url)
+    requests.get(url)
+    print('Done: ' + url)
+
+pool = Pool(size=10)
+for url in urls:
+    pool.apply_async(download, args=[url])
+pool.join()
+```
+
+--
+
+### gevent
+
+```python
+...
+
+for url in urls:
+    pool.apply_async(download, args=[url])
+pool.join()
+
+# OR
+
+responses = list(pool.imap_unordered(download, urls))
+```
+
+```
+Downloading: http://python.org/
+Downloading: http://www.pocketplaylab.com/
+Downloading: http://github.com/
+Done: http://www.pocketplaylab.com/
+Done: http://github.com/
+Done: http://python.org/
+```
+
+--
+
+### gevent
+
+- Biggest win: use standard library/3rd party packages
+- Django!
+- Used by Pinterest, Disqus
+
+--
+
+# Scaling web backends
+
+--
+
+### gunicorn
+
+--
+
+### celery
+
+--
+
+# Tulip
+
+--
