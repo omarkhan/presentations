@@ -4,5 +4,6 @@ set -e
 
 ls *.md | while read file; do
   name="$(basename "${file}" .md)"
-  cleaver --output "${name}.html" "${file}"
+  echo "${name}"
+  cleaver "${file}" --output "${name}.html"
 done

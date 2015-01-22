@@ -13,7 +13,7 @@ author:
 ### @\_\_omar\_\_
 
 - Lead backend developer at [Pocket PlayLab](http://pocketplaylab.com/)
-- Python developer for the last 8 years
+- Python developer for the last 6 years
 - Made heavy use of gevent in my last job at [Arachnys](https://www.arachnys.com/)
 - Never used tulip for real stuff (nobody has - yet)
 
