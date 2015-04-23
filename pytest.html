@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Omar Khan - Presentations</title>
+  <title>pytest - because this ain&#39;t java</title>
   <style type="text/css">
     body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -401,12 +401,244 @@ pre .chunk {
   </div>
 
   <div class="slide" id="slide-1">
-    <section class="slide-content"><h3 id="presentations">Presentations</h3>
+    <section class="slide-content"><h1 id="pytest-because-this-ain-t-java">pytest - because this ain&#39;t java</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-2">
+    <section class="slide-content"><h3 id="-_-_omar-_-_">@__omar__</h3>
 <ul>
-<li><a href="python-asyncio.html">Scaling web backends with async IO</a></li>
-<li><a href="flask-intro.html">Introduction to Flask</a></li>
-<li><a href="pytest.html">pytest - because this ain&#39;t java</a></li>
+<li>Backend lead at <a href="http://www.playlab.com/">Playlab Games</a></li>
+<li>Python developer for the last 6 years</li>
+<li>Mainly django, some web crawling and machine learning too</li>
 </ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-3">
+    <section class="slide-content"><h1 id="testing">Testing</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-4">
+    <section class="slide-content"><h3 id="why-test-">Why test?</h3>
+<ul>
+<li>Catch regressions</li>
+<li>Clarify your designs</li>
+<li>Improve code quality</li>
+<li>Make life easier for new developers</li>
+<li>You&#39;re doing it anyway</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-5">
+    <section class="slide-content"><h3 id="testing-pyramid">Testing pyramid</h3>
+<p><img src="testing-pyramid.png" alt="Testing pyramid"></p>
+<p>from <a href="https://rubyplus.com/">rubyplus.com</a></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-6">
+    <section class="slide-content"><h1 id="testing-in-python">Testing in python</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-7">
+    <section class="slide-content"><h3 id="testing-in-python">Testing in python</h3>
+<ul>
+<li>doctest</li>
+<li>unittest</li>
+<li>nose</li>
+<li><strong><a href="https://pytest.org/">pytest</a></strong></li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-8">
+    <section class="slide-content"><h3 id="doctest">doctest</h3>
+<pre><code class="lang-python"><span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(x)</span>:</span>
+    <span class="string">"""
+    Squares x.
+
+    &gt;&gt;&gt; square(2)
+    4
+    &gt;&gt;&gt; square(-2)
+    4
+    """</span>
+    <span class="keyword">return</span> x * x
+
+<span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:
+    <span class="keyword">import</span> doctest
+    doctest.testmod()</code></pre>
+<p>from <a href="http://python-guide.org/">python-guide.org</a></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-9">
+    <section class="slide-content"><h3 id="doctest">doctest</h3>
+<p>Success - no output</p>
+<p>Failure:</p>
+<pre><code>**********************************************************************
+File &quot;tests.py&quot;, line 5, in __main__.square
+Failed example:
+    square(2)
+Expected:
+    4
+Got:
+    3
+**********************************************************************</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-10">
+    <section class="slide-content"><h3 id="doctest">doctest</h3>
+<ul>
+<li>In the stdlib</li>
+<li>Good for simple unit tests</li>
+<li>Makes great documentation</li>
+<li>Not enough on its own</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-11">
+    <section class="slide-content"><h3 id="unittest">unittest</h3>
+<pre><code class="lang-python"><span class="keyword">import</span> unittest
+
+<span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(x)</span>:</span>
+    <span class="keyword">return</span> x * x
+
+<span class="class"><span class="keyword">class</span> <span class="title">MyTest</span><span class="params">(unittest.TestCase)</span>:</span>
+    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span><span class="params">(self)</span>:</span>
+        <span class="comment"># Do some setup</span>
+        <span class="keyword">pass</span>
+
+    <span class="function"><span class="keyword">def</span> <span class="title">test_square</span><span class="params">(self)</span>:</span>
+        self.assertEqual(square(<span class="number">2</span>), <span class="number">4</span>)
+        self.assertEqual(square(-<span class="number">2</span>), <span class="number">4</span>)
+
+    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span><span class="params">(self)</span>:</span>
+        <span class="comment"># Tear everything down</span>
+        <span class="keyword">pass</span>
+
+<span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:
+    unittest.main()</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-12">
+    <section class="slide-content"><h3 id="unittest">unittest</h3>
+<p>Success:</p>
+<pre><code>.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK</code></pre>
+<p>Failure:</p>
+<pre><code>F
+======================================================================
+FAIL: test_square (__main__.MyTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &quot;tests.py&quot;, line 12, in test_square
+    self.assertEqual(square(2), 4)
+AssertionError: 3 != 4
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (failures=1)</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-13">
+    <section class="slide-content"><h3 id="unittest">unittest</h3>
+<ul>
+<li>In the stdlib</li>
+<li>De-facto standard</li>
+<li>Direct port of JUnit</li>
+<li>Powerful but <strong>unpythonic</strong></li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h3 id="pytest">pytest</h3>
+<pre><code class="lang-python"><span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(x)</span>:</span>
+    <span class="keyword">return</span> x * x
+
+<span class="function"><span class="keyword">def</span> <span class="title">test_square</span><span class="params">()</span>:</span>
+    <span class="keyword">assert</span> square(<span class="number">2</span>) == <span class="number">4</span>
+    <span class="keyword">assert</span> square(-<span class="number">2</span>) == <span class="number">4</span></code></pre>
+<pre><code>$ py.test tests.py
+
+================================================ test session starts =================================================
+platform darwin -- Python 2.7.9 -- py-1.4.26 -- pytest-2.7.0
+rootdir: /Users/omar/dev/presentations, inifile:
+collected 1 items
+
+tests.py .
+
+============================================== 1 passed in 0.01 seconds ==============================================</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-15">
+    <section class="slide-content"><h3 id="pytest">pytest</h3>
+<p>Failure:</p>
+<pre><code>================================================ test session starts =================================================
+platform darwin -- Python 2.7.6 -- py-1.4.26 -- pytest-2.7.0
+rootdir: /Users/omar/dev/presentations, inifile:
+collected 1 items
+
+tests.py F
+
+====================================================== FAILURES ======================================================
+____________________________________________________ test_square _____________________________________________________
+
+    def test_square():
+&gt;       assert square(2) == 4
+E       assert 3 == 4
+E        +  where 3 = square(2)
+
+tests.py:5: AssertionError
+============================================== 1 failed in 0.01 seconds ==============================================</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-16">
+    <section class="slide-content"><h3 id="pytest">pytest</h3>
+<ul>
+<li>Has been around forever</li>
+<li>Simple, clean, pythonic</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-17">
+    <section class="slide-content"><h3 id="fixtures">Fixtures</h3>
+<pre><code class="lang-python"><span class="keyword">import</span> os
+<span class="keyword">import</span> pytest
+
+<span class="function"><span class="keyword">def</span> <span class="title">exp</span><span class="params">(x)</span>:</span>
+    <span class="keyword">return</span> x ** int(os.environ[<span class="string">'EXPONENT'</span>])
+
+<span class="decorator">@pytest.fixture</span>
+<span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">()</span>:</span>
+    os.environ[<span class="string">'EXPONENT'</span>] = <span class="string">'2'</span>
+
+<span class="function"><span class="keyword">def</span> <span class="title">test_exp</span><span class="params">(square)</span>:</span>
+    <span class="keyword">assert</span> exp(<span class="number">2</span>) == <span class="number">4</span>
+    <span class="keyword">assert</span> exp(-<span class="number">2</span>) == <span class="number">4</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-18">
+    <section class="slide-content"><h3 id="discovery">Discovery</h3>
+<ul>
+<li>Suffix each test file with <code>_test.py</code></li>
+<li>Run <code>py.test</code></li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-19">
+    <section class="slide-content"><h3 id="examples">Examples</h3>
+<ul>
+<li><a href="https://github.com/mitsuhiko/flask/tree/master/tests">flask</a></li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-20">
+    <section class="slide-content"><div class="author">
+  <h1 class="name">Omar Khan</h1>
+    <h3 class="url">
+      <a href="http://omarkhan.me/">http://omarkhan.me/</a>
+    </h3>
+</div>
 </section>
   </div>
 
