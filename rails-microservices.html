@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Omar Khan - Presentations</title>
+  <title>Microservices with Rails</title>
   <style type="text/css">
     body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -408,13 +408,97 @@ code {
   </div>
 
   <div class="slide" id="slide-1">
-    <section class="slide-content"><h3 id="presentations">Presentations</h3>
+    <section class="slide-content"><h1 id="microservices-with-rails">Microservices with Rails</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-2">
+    <section class="slide-content"><h3 id="-_-_omar-_-_">@__omar__</h3>
 <ul>
-<li><a href="python-asyncio.html">Scaling web backends with async IO</a></li>
-<li><a href="flask-intro.html">Introduction to Flask</a></li>
-<li><a href="pytest.html">pytest - because this ain&#39;t java</a></li>
-<li><a href="rails-microservices.html">Microservices with Rails</a></li>
+<li>Backend lead at <a href="http://www.playlab.com/">Playlab Games</a></li>
+<li>Deploying ruby code to millions of users every day</li>
 </ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-3">
+    <section class="slide-content"><h3 id="scope-of-this-talk">Scope of this talk</h3>
+<ul>
+<li>What are microservices?</li>
+<li>Do I want them?</li>
+<li>How do I do it?</li>
+<li>Lessons learned</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-4">
+    <section class="slide-content"><h1 id="what-are-microservices-">What are microservices?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-5">
+    <section class="slide-content"><h3 id="what-are-microservices-">What are microservices?</h3>
+<ul>
+<li>Nobody really knows</li>
+<li>Many different definitions</li>
+<li>Many different implementations</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-6">
+    <section class="slide-content"><h3 id="what-are-microservices-">What are microservices?</h3>
+<p><img src="images/soa-book.jpg" alt="SOA book"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-7">
+    <section class="slide-content"><h3 id="what-are-microservices-">What are microservices?</h3>
+<p><img src="images/soa-book-cover.jpg" alt="SOA book cover"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-8">
+    <section class="slide-content"><h3 id="what-i-m-going-to-talk-about-">What I&#39;m going to talk about:</h3>
+<p>Taking a big monolithic web backend and splitting it up into little pieces, or
+<strong>microservices</strong>.</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-9">
+    <section class="slide-content"><h1 id="why-would-i-want-to-do-this-">Why would I want to do this?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-10">
+    <section class="slide-content"><h3 id="why-would-i-want-to-do-this-">Why would I want to do this?</h3>
+<ul>
+<li>Separation of concerns</li>
+<li>Contain failures</li>
+<li>Scale components independently</li>
+<li>Use the right tool for each job</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-11">
+    <section class="slide-content"><h3 id="why-would-i-not-want-to-do-this-">Why would I <em>not</em> want to do this?</h3>
+<ul>
+<li>Increased ops workload</li>
+<li>These goals can all be achieved in a monolithic codebase, if you have the
+discipline</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-12">
+    <section class="slide-content"><h3 id="rule-of-thumb">Rule of thumb</h3>
+<pre><code class="lang-ruby"><span class="function"><span class="keyword">def</span> <span class="title">is_this_a_good_idea?</span></span>
+  <span class="keyword">if</span> ops_expert? <span class="keyword">or</span> using_heroku?
+    <span class="string">'go for it'</span>
+  <span class="keyword">else</span>
+    <span class="string">'probably not'</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-13">
+    <section class="slide-content"><div class="author">
+  <h1 class="name">Omar Khan</h1>
+    <h3 class="url">
+      <a href="http://omarkhan.me/">http://omarkhan.me/</a>
+    </h3>
+</div>
 </section>
   </div>
 

@@ -35,7 +35,7 @@ style: style.css
 
 ### Testing pyramid
 
-![Testing pyramid](testing-pyramid.png)
+![Testing pyramid](images/testing-pyramid.png)
 
 from [rubyplus.com](https://rubyplus.com/)
 
