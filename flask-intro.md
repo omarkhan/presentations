@@ -2,6 +2,7 @@ title: Introduction to Flask
 author:
   name: Omar Khan
   url: http://omarkhan.me/
+controls: false
 
 --
 

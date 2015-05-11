@@ -2,6 +2,7 @@ title: pytest - because this ain't java
 author:
   name: Omar Khan
   url: http://omarkhan.me/
+controls: false
 
 --
 

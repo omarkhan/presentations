@@ -1,4 +1,5 @@
 title: Omar Khan - Presentations
+controls: false
 
 --
 
