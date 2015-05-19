@@ -400,6 +400,10 @@ code {
   font-size: 130%;
 }
 
+ul {
+  padding: 10px 0 10px 60px;
+}
+
   </style>
 </head>
 <body>
@@ -423,39 +427,47 @@ code {
     <section class="slide-content"><h3 id="scope-of-this-talk">Scope of this talk</h3>
 <ul>
 <li>What are microservices?</li>
-<li>Do I want them?</li>
-<li>How do I do it?</li>
+<li>Do you want them?</li>
+<li>How do you do it?</li>
 <li>Lessons learned</li>
 </ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-4">
-    <section class="slide-content"><h1 id="what-are-microservices-">What are microservices?</h1>
-</section>
-  </div>
-  <div class="slide hidden" id="slide-5">
-    <section class="slide-content"><h3 id="what-are-microservices-">What are microservices?</h3>
+    <section class="slide-content"><h3 id="microservices-at-playlab">Microservices at Playlab</h3>
 <ul>
-<li>Nobody really knows</li>
-<li>Many different definitions</li>
-<li>Many different implementations</li>
+<li>Currently migrating to microservices on the backend<ul>
+<li>Data persistence</li>
+<li>User authentication</li>
+<li>In-app purchase verification</li>
+</ul>
+</li>
+<li>Mostly rails, some nodejs</li>
+<li>Work in progress!</li>
 </ul>
 </section>
   </div>
+  <div class="slide hidden" id="slide-5">
+    <section class="slide-content"><h1 id="what-are-microservices-">What are microservices?</h1>
+</section>
+  </div>
   <div class="slide hidden" id="slide-6">
-    <section class="slide-content"><h3 id="what-are-microservices-">What are microservices?</h3>
-<p><img src="images/soa-book.jpg" alt="SOA book"></p>
+    <section class="slide-content"><h1 id="service-oriented-architecture-soa-">Service-Oriented Architecture (SOA)?</h1>
 </section>
   </div>
   <div class="slide hidden" id="slide-7">
-    <section class="slide-content"><h3 id="what-are-microservices-">What are microservices?</h3>
-<p><img src="images/soa-book-cover.jpg" alt="SOA book cover"></p>
+    <section class="slide-content"><h3 id="service-oriented-architecture-soa-">Service-Oriented Architecture (SOA)?</h3>
+<p><img src="images/soa-book.jpg" alt="SOA book"></p>
 </section>
   </div>
   <div class="slide hidden" id="slide-8">
     <section class="slide-content"><h3 id="what-i-m-going-to-talk-about-">What I&#39;m going to talk about:</h3>
-<p>Taking a big monolithic web backend and splitting it up into little pieces, or
-<strong>microservices</strong>.</p>
+<ul>
+<li>Taking a big monolithic web application and splitting it up into little
+pieces, or <strong>microservices</strong>.</li>
+<li>Each microservice runs as a separate process</li>
+<li>Services communicate over the network (http)</li>
+</ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-9">
@@ -467,7 +479,7 @@ code {
 <ul>
 <li>Separation of concerns</li>
 <li>Contain failures</li>
-<li>Scale components independently</li>
+<li>Scale services independently</li>
 <li>Use the right tool for each job</li>
 </ul>
 </section>
@@ -484,7 +496,7 @@ discipline</li>
   <div class="slide hidden" id="slide-12">
     <section class="slide-content"><h3 id="rule-of-thumb">Rule of thumb</h3>
 <pre><code class="lang-ruby"><span class="function"><span class="keyword">def</span> <span class="title">is_this_a_good_idea?</span></span>
-  <span class="keyword">if</span> ops_expert? <span class="keyword">or</span> using_heroku?
+  <span class="keyword">if</span> ops_wizard? <span class="keyword">or</span> using_heroku?
     <span class="string">'go for it'</span>
   <span class="keyword">else</span>
     <span class="string">'probably not'</span>
@@ -493,6 +505,100 @@ discipline</li>
 </section>
   </div>
   <div class="slide hidden" id="slide-13">
+    <section class="slide-content"><h3 id="where-to-start">Where to start</h3>
+<ul>
+<li>Identify the main things your application does</li>
+<li>Try to keep services as separate as possible (best if they don&#39;t have to talk
+to each other)</li>
+<li>Start with something easy</li>
+<li>Settle on some common identifiers: user ids, etc.</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h3 id="checklist">Checklist</h3>
+<ul>
+<li>Good test coverage</li>
+<li>Automated deploys</li>
+<li>Monitoring</li>
+<li>Documentation</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-15">
+    <section class="slide-content"><h1 id="example">Example</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-16">
+    <section class="slide-content"><h1 id="lessons-learned">Lessons learned</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-17">
+    <section class="slide-content"><h3 id="lessons-learned">Lessons learned</h3>
+<ul>
+<li>Still early days</li>
+<li>Looking good so far</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-18">
+    <section class="slide-content"><h3 id="code-quality">Code quality</h3>
+<ul>
+<li>Great opportunity to refactor/rewrite</li>
+<li>Lint all new code, heavily<ul>
+<li>rubocop</li>
+<li>reek</li>
+<li>pronto</li>
+</ul>
+</li>
+<li>Small codebases are easier to understand and maintain</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-19">
+    <section class="slide-content"><h3 id="backward-compatibility">Backward compatibility</h3>
+<ul>
+<li>Modify the monolith to call the new microservices</li>
+<li>Modify the new services to call the monolith</li>
+<li>Hack your way through: access the same data stores</li>
+<li>Much easier if you don&#39;t have to deal with this at all</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-20">
+    <section class="slide-content"><h3 id="devops">DevOps</h3>
+<ul>
+<li>Automate everything</li>
+<li>Make it easy to roll back changes</li>
+<li>Use heroku or other PaaS if you can</li>
+<li>Containerize</li>
+<li>Monitoring is essential</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-21">
+    <section class="slide-content"><h3 id="development">Development</h3>
+<p>Use docker and <a href="https://docs.docker.com/compose/">fig</a> (AKA docker-compose)</p>
+<pre><code>app:
+  build: .
+  volumes:
+    - &#39;.:/usr/src/app&#39;
+  environment:
+    RAILS_ENV: development
+  links:
+    - database
+    - redis
+  ports:
+    - &#39;3000:3000&#39;
+
+database:
+  image: postgres
+
+redis:
+  image: redis</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-22">
     <section class="slide-content"><div class="author">
   <h1 class="name">Omar Khan</h1>
     <h3 class="url">
