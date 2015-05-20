@@ -13,7 +13,7 @@ style: style.css
 
 ### @\_\_omar\_\_
 
-- Backend lead at [Playlab Games](http://www.playlab.com/)
+- Backend lead at [Playlab Games](http://www.playlab.com/) (for another week)
 - Python, ruby, javascript
 - Working with ruby and rails at Playlab, with a little nodejs on the side
 
