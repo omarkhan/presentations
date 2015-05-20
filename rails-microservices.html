@@ -419,7 +419,8 @@ ul {
     <section class="slide-content"><h3 id="-_-_omar-_-_">@__omar__</h3>
 <ul>
 <li>Backend lead at <a href="http://www.playlab.com/">Playlab Games</a></li>
-<li>Deploying ruby code to millions of users every day</li>
+<li>Python developer</li>
+<li>Working with ruby and rails at Playlab, with a little nodejs on the side</li>
 </ul>
 </section>
   </div>
@@ -434,33 +435,15 @@ ul {
 </section>
   </div>
   <div class="slide hidden" id="slide-4">
-    <section class="slide-content"><h3 id="microservices-at-playlab">Microservices at Playlab</h3>
-<ul>
-<li>Currently migrating to microservices on the backend<ul>
-<li>Data persistence</li>
-<li>User authentication</li>
-<li>In-app purchase verification</li>
-</ul>
-</li>
-<li>Mostly rails, some nodejs</li>
-<li>Work in progress!</li>
-</ul>
-</section>
-  </div>
-  <div class="slide hidden" id="slide-5">
     <section class="slide-content"><h1 id="what-are-microservices-">What are microservices?</h1>
 </section>
   </div>
-  <div class="slide hidden" id="slide-6">
-    <section class="slide-content"><h1 id="service-oriented-architecture-soa-">Service-Oriented Architecture (SOA)?</h1>
-</section>
-  </div>
-  <div class="slide hidden" id="slide-7">
+  <div class="slide hidden" id="slide-5">
     <section class="slide-content"><h3 id="service-oriented-architecture-soa-">Service-Oriented Architecture (SOA)?</h3>
 <p><img src="images/soa-book.jpg" alt="SOA book"></p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-8">
+  <div class="slide hidden" id="slide-6">
     <section class="slide-content"><h3 id="what-i-m-going-to-talk-about-">What I&#39;m going to talk about:</h3>
 <ul>
 <li>Taking a big monolithic web application and splitting it up into little
@@ -470,30 +453,48 @@ pieces, or <strong>microservices</strong>.</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-9">
+  <div class="slide hidden" id="slide-7">
+    <section class="slide-content"><h3 id="microservices-at-playlab">Microservices at Playlab</h3>
+<ul>
+<li>Currently migrating to microservices on the backend<ul>
+<li>Data persistence</li>
+<li>User authentication</li>
+<li>In-app purchase verification</li>
+<li>Leaderboards</li>
+<li>Events collector for analytics</li>
+</ul>
+</li>
+<li>Mostly rails, some nodejs</li>
+<li>Work in progress!</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-8">
     <section class="slide-content"><h1 id="why-would-i-want-to-do-this-">Why would I want to do this?</h1>
 </section>
   </div>
-  <div class="slide hidden" id="slide-10">
+  <div class="slide hidden" id="slide-9">
     <section class="slide-content"><h3 id="why-would-i-want-to-do-this-">Why would I want to do this?</h3>
 <ul>
 <li>Separation of concerns</li>
 <li>Contain failures</li>
 <li>Scale services independently</li>
 <li>Use the right tool for each job</li>
+<li>Amazon, Netflix</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-11">
+  <div class="slide hidden" id="slide-10">
     <section class="slide-content"><h3 id="why-would-i-not-want-to-do-this-">Why would I <em>not</em> want to do this?</h3>
 <ul>
 <li>Increased ops workload</li>
 <li>These goals can all be achieved in a monolithic codebase, if you have the
 discipline</li>
+<li>Etsy, Facebook</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-12">
+  <div class="slide hidden" id="slide-11">
     <section class="slide-content"><h3 id="rule-of-thumb">Rule of thumb</h3>
 <pre><code class="lang-ruby"><span class="function"><span class="keyword">def</span> <span class="title">is_this_a_good_idea?</span></span>
   <span class="keyword">if</span> ops_wizard? <span class="keyword">or</span> using_heroku?
@@ -504,7 +505,7 @@ discipline</li>
 <span class="keyword">end</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-13">
+  <div class="slide hidden" id="slide-12">
     <section class="slide-content"><h3 id="where-to-start">Where to start</h3>
 <ul>
 <li>Identify the main things your application does</li>
@@ -515,7 +516,7 @@ to each other)</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-14">
+  <div class="slide hidden" id="slide-13">
     <section class="slide-content"><h3 id="checklist">Checklist</h3>
 <ul>
 <li>Good test coverage</li>
@@ -525,15 +526,87 @@ to each other)</li>
 </ul>
 </section>
   </div>
+  <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h1 id="examples">Examples</h1>
+</section>
+  </div>
   <div class="slide hidden" id="slide-15">
-    <section class="slide-content"><h1 id="example">Example</h1>
+    <section class="slide-content"><h3 id="events-collector">Events collector</h3>
+<ul>
+<li>Analytics backend</li>
+<li>Nodejs</li>
+<li>Just one endpoint: <code>POST /events</code></li>
+<li>Takes arbitrary json data</li>
+<li>Compresses it, chunks it and stores it on S3</li>
+</ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-16">
-    <section class="slide-content"><h1 id="lessons-learned">Lessons learned</h1>
+    <section class="slide-content"><h3 id="datacubes">DataCubes</h3>
+<ul>
+<li>Data persistence service</li>
+<li>Rails</li>
+<li>Simple api<ul>
+<li><code>GET /users/:id/:game</code></li>
+<li><code>PUT /users/:id/:game</code></li>
+</ul>
+</li>
+<li>Calls our <code>passport</code> service to check user&#39;s auth token</li>
+<li>Revision tracking, conflict detection</li>
+<li>Currently uses mysql, we are considering more scalable alternatives</li>
+</ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-17">
+    <section class="slide-content"><h3 id="passport">Passport</h3>
+<ul>
+<li>Auth/identity service</li>
+<li>Rails</li>
+<li>Two endpoints<ul>
+<li><code>POST /:game/login</code></li>
+<li><code>GET /:game/verify/:id</code></li>
+</ul>
+</li>
+<li>Stores user data in postgres</li>
+<li>Auth tokens stored in redis</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-18">
+    <section class="slide-content"><h3 id="scrooge">Scrooge</h3>
+<ul>
+<li>Payment verification service</li>
+<li>Nodejs</li>
+<li>Synchronous api<ul>
+<li><code>POST /amazon</code></li>
+<li><code>POST /apple</code></li>
+<li><code>POST /google</code></li>
+</ul>
+</li>
+<li>Stores payment data in postgres</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-19">
+    <section class="slide-content"><h3 id="tiptop">TipTop</h3>
+<ul>
+<li>Leaderboard service</li>
+<li>Rails</li>
+<li>Allows games to rank anything they like</li>
+<li>Uses redis sorted sets</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-20">
+    <section class="slide-content"><h3 id="still-to-come">Still to come</h3>
+<ul>
+<li>Facebook activity feeds</li>
+<li>Admin panel</li>
+<li>...</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-21">
     <section class="slide-content"><h3 id="lessons-learned">Lessons learned</h3>
 <ul>
 <li>Still early days</li>
@@ -541,7 +614,7 @@ to each other)</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-18">
+  <div class="slide hidden" id="slide-22">
     <section class="slide-content"><h3 id="code-quality">Code quality</h3>
 <ul>
 <li>Great opportunity to refactor/rewrite</li>
@@ -555,17 +628,7 @@ to each other)</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-19">
-    <section class="slide-content"><h3 id="backward-compatibility">Backward compatibility</h3>
-<ul>
-<li>Modify the monolith to call the new microservices</li>
-<li>Modify the new services to call the monolith</li>
-<li>Hack your way through: access the same data stores</li>
-<li>Much easier if you don&#39;t have to deal with this at all</li>
-</ul>
-</section>
-  </div>
-  <div class="slide hidden" id="slide-20">
+  <div class="slide hidden" id="slide-23">
     <section class="slide-content"><h3 id="devops">DevOps</h3>
 <ul>
 <li>Automate everything</li>
@@ -576,7 +639,26 @@ to each other)</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-21">
+  <div class="slide hidden" id="slide-24">
+    <section class="slide-content"><h3 id="backward-compatibility">Backward compatibility</h3>
+<ul>
+<li>Version your apis</li>
+<li>Much easier if your services don&#39;t need to talk to each other</li>
+<li>If they do, make sure you have integration tests</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-25">
+    <section class="slide-content"><h3 id="dealing-with-the-monolith">Dealing with the monolith</h3>
+<ul>
+<li>Modify the monolith to call the new microservices</li>
+<li>Modify the new services to call the monolith</li>
+<li>Hack your way through: access the same data stores</li>
+<li>Much easier if you don&#39;t have to deal with this at all</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-26">
     <section class="slide-content"><h3 id="development">Development</h3>
 <p>Use docker and <a href="https://docs.docker.com/compose/">fig</a> (AKA docker-compose)</p>
 <pre><code>app:
@@ -598,7 +680,41 @@ redis:
   image: redis</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-22">
+  <div class="slide hidden" id="slide-27">
+    <section class="slide-content"><h3 id="development">Development</h3>
+<ul>
+<li>Have a template for new services<ul>
+<li><a href="https://github.com/pocket-playlab/rails-template">https://github.com/pocket-playlab/rails-template</a></li>
+<li>Dockerfile</li>
+<li>docker-compose.yml<ul>
+<li>postgres</li>
+<li>redis</li>
+</ul>
+</li>
+<li>Stripped-down rails base</li>
+<li>rubocop and reek configuration</li>
+<li>New Relic configuration</li>
+<li>Sentry configuration</li>
+</ul>
+</li>
+<li>Split reusable components into gems</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-28">
+    <section class="slide-content"><h3 id="tl-dr">tl;dr</h3>
+<ul>
+<li>Build things fast, without worrying about old code</li>
+<li>Use the right tools for each service</li>
+<li>Be prepared to do more ops</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-29">
+    <section class="slide-content"><h1 id="questions-">Questions?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-30">
     <section class="slide-content"><div class="author">
   <h1 class="name">Omar Khan</h1>
     <h3 class="url">

@@ -14,7 +14,8 @@ style: style.css
 ### @\_\_omar\_\_
 
 - Backend lead at [Playlab Games](http://www.playlab.com/)
-- Deploying ruby code to millions of users every day
+- Python developer
+- Working with ruby and rails at Playlab, with a little nodejs on the side
 
 --
 
@@ -27,22 +28,7 @@ style: style.css
 
 --
 
-### Microservices at Playlab
-
-- Currently migrating to microservices on the backend
-  - Data persistence
-  - User authentication
-  - In-app purchase verification
-- Mostly rails, some nodejs
-- Work in progress!
-
---
-
 # What are microservices?
-
---
-
-# Service-Oriented Architecture (SOA)?
 
 --
 
@@ -61,6 +47,19 @@ style: style.css
 
 --
 
+### Microservices at Playlab
+
+- Currently migrating to microservices on the backend
+  - Data persistence
+  - User authentication
+  - In-app purchase verification
+  - Leaderboards
+  - Events collector for analytics
+- Mostly rails, some nodejs
+- Work in progress!
+
+--
+
 # Why would I want to do this?
 
 --
@@ -71,6 +70,7 @@ style: style.css
 - Contain failures
 - Scale services independently
 - Use the right tool for each job
+- Amazon, Netflix
 
 --
 
@@ -79,6 +79,7 @@ style: style.css
 - Increased ops workload
 - These goals can all be achieved in a monolithic codebase, if you have the
   discipline
+- Etsy, Facebook
 
 --
 
@@ -115,11 +116,71 @@ end
 
 --
 
-# Example
+# Examples
 
 --
 
-# Lessons learned
+### Events collector
+
+- Analytics backend
+- Nodejs
+- Just one endpoint: `POST /events`
+- Takes arbitrary json data
+- Compresses it, chunks it and stores it on S3
+
+--
+
+### DataCubes
+
+- Data persistence service
+- Rails
+- Simple api
+  - `GET /users/:id/:game`
+  - `PUT /users/:id/:game`
+- Calls our `passport` service to check user's auth token
+- Revision tracking, conflict detection
+- Currently uses mysql, we are considering more scalable alternatives
+
+--
+
+### Passport
+
+- Auth/identity service
+- Rails
+- Two endpoints
+  - `POST /:game/login`
+  - `GET /:game/verify/:id`
+- Stores user data in postgres
+- Auth tokens stored in redis
+
+--
+
+### Scrooge
+
+- Payment verification service
+- Nodejs
+- Synchronous api
+  - `POST /amazon`
+  - `POST /apple`
+  - `POST /google`
+- Stores payment data in postgres
+
+--
+
+### TipTop
+
+- Leaderboard service
+- Rails
+- Allows games to rank anything they like
+- Uses redis sorted sets
+
+--
+
+### Still to come
+
+- Facebook activity feeds
+- Admin panel
+- ...
 
 --
 
@@ -141,15 +202,6 @@ end
 
 --
 
-### Backward compatibility
-
-- Modify the monolith to call the new microservices
-- Modify the new services to call the monolith
-- Hack your way through: access the same data stores
-- Much easier if you don't have to deal with this at all
-
---
-
 ### DevOps
 
 - Automate everything
@@ -157,6 +209,23 @@ end
 - Use heroku or other PaaS if you can
 - Containerize
 - Monitoring is essential
+
+--
+
+### Backward compatibility
+
+- Version your apis
+- Much easier if your services don't need to talk to each other
+- If they do, make sure you have integration tests
+
+--
+
+### Dealing with the monolith
+
+- Modify the monolith to call the new microservices
+- Modify the new services to call the monolith
+- Hack your way through: access the same data stores
+- Much easier if you don't have to deal with this at all
 
 --
 
@@ -181,3 +250,31 @@ Use docker and [fig](https://docs.docker.com/compose/) (AKA docker-compose)
 
     redis:
       image: redis
+
+--
+
+### Development
+
+- Have a template for new services
+  - https://github.com/pocket-playlab/rails-template
+  - Dockerfile
+  - docker-compose.yml
+    - postgres
+    - redis
+  - Stripped-down rails base
+  - rubocop and reek configuration
+  - New Relic configuration
+  - Sentry configuration
+- Split reusable components into gems
+
+--
+
+### tl;dr
+
+- Build things fast, without worrying about old code
+- Use the right tools for each service
+- Be prepared to do more ops
+
+--
+
+# Questions?
