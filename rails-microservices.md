@@ -281,3 +281,10 @@ Use docker and [fig](https://docs.docker.com/compose/) (AKA docker-compose)
 --
 
 # Questions?
+
+--
+
+### We're hiring
+
+- **DevOps**
+- Rails devs
