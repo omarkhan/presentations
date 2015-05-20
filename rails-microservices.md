@@ -14,7 +14,7 @@ style: style.css
 ### @\_\_omar\_\_
 
 - Backend lead at [Playlab Games](http://www.playlab.com/)
-- Python developer
+- Python, ruby, javascript
 - Working with ruby and rails at Playlab, with a little nodejs on the side
 
 --
@@ -24,6 +24,7 @@ style: style.css
 - What are microservices?
 - Do you want them?
 - How do you do it?
+- Microservices at Playlab
 - Lessons learned
 
 --
@@ -188,6 +189,8 @@ end
 
 - Still early days
 - Looking good so far
+  - Code is much nicer
+  - New features are easier to implement
 
 --
 
