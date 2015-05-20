@@ -185,6 +185,19 @@ end
 
 --
 
+### Operations
+
+- Everything is containerized
+- Deploy to CoreOS cluster hosted on AWS
+- etcd for configuration
+- Working on tooling to make it easier to deploy new services
+- In the meantime we still prototype new services on heroku
+- Continuous integration, automated deploys
+- New Relic for performance monitoring - now with metrics for docker
+- Sentry for error tracking
+
+--
+
 ### Lessons learned
 
 - Still early days
