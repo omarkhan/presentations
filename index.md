@@ -10,3 +10,4 @@ style: style.css
 - [Introduction to Flask](flask-intro.html)
 - [pytest - because this ain't java](pytest.html)
 - [Microservices with Rails](rails-microservices.html)
+- [Forget Ansible - just write shell scripts](shell-scripts.html)
