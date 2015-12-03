@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
-
+#!/bin/bash
 set -e
 
-ls *.md | while read file; do
+for file in $(ls *.md); do
   name="$(basename "${file}" .md)"
-  echo "${name}"
-  cleaver "${file}" --output "${name}.html"
+  cleaver "${file}" --output "${name}.html" && echo "${name}" &
 done
+
+wait
