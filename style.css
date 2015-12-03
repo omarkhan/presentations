@@ -1,11 +1,19 @@
-body {
-  background-color: white;
-}
-
 code {
   font-size: 130%;
 }
 
 ul {
   padding: 10px 0 10px 60px;
+}
+
+.slide {
+  background-color: white;
+}
+
+.slide-content {
+  width: 1000px;
+}
+
+.hljs-attr {
+  color: #0086b3;
 }
