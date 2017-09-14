@@ -12,6 +12,7 @@ ul {
 
 .slide-content {
   width: 1000px;
+  overflow: visible;
 }
 
 .hljs-attr {

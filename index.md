@@ -11,3 +11,4 @@ style: style.css
 - [pytest - because this ain't java](pytest.html)
 - [Microservices with Rails](rails-microservices.html)
 - [Forget Ansible - just write shell scripts](shell-scripts.html)
+- [The Test Pyramid](test-pyramid.html)

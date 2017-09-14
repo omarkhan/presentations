@@ -139,6 +139,7 @@ pre {
   position: fixed;
   top: 0; left: 0; right: 0;
   height: 3px;
+  z-index: 1;
 }
 
 .progress-bar {
@@ -369,6 +370,7 @@ ul {
 
 .slide-content {
   width: 1000px;
+  overflow: visible;
 }
 
 .hljs-attr {
@@ -839,7 +841,7 @@ print(<span class="hljs-string">'Serving on'</span>, server.sockets[<span class=
 <h2 id="questions-">Questions?</h2>
 </section>
   </div>
-  <div class="slide hidden" id="slide-40">
+  <div class="slide hidden author-slide" id="slide-40">
     <section class="slide-content"><div class="author">
   <h1 class="name">Omar Khan</h1>
     <h3 class="url">
@@ -887,7 +889,11 @@ function navigate(n) {
  * Updates the current URL to include a hashtag of the current page number.
  */
 function updateURL() {
-  window.history.replaceState({} , null, '#' + currentPosition());
+  try {
+    window.history.replaceState({} , null, '#' + currentPosition());
+  } catch (e) {
+    window.location.hash = currentPosition();
+  }
 }
 
 

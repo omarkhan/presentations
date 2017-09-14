@@ -1,0 +1,927 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>The Test Pyramid</title>
+  <style type="text/css">
+    body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #222;
+  font-size: 100%;
+}
+
+.slide {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  background-color: #f7f7f7;
+}
+
+.slide-content {
+  width: 800px;
+  height: 600px;
+  overflow: hidden;
+  margin: 80px auto 0 auto;
+  padding: 30px;
+
+  font-weight: 200;
+  font-size: 200%;
+  line-height: 1.375;
+}
+
+.controls {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+.arrow {
+  width: 0; height: 0;
+  border: 30px solid #333;
+  float: left;
+  margin-right: 30px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.prev {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+
+  border-left-width: 0;
+  border-right-width: 50px;
+}
+
+.next {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+
+  border-left-width: 50px;
+  border-right-width: 0;
+}
+
+.prev:hover {
+  border-right-color: #888;
+  cursor: pointer;
+}
+
+.next:hover {
+  border-left-color: #888;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 300%;
+  line-height: 1.2;
+  text-align: center;
+  margin: 170px 0 0;
+}
+
+h2 {
+  font-size: 100%;
+  line-height: 1.2;
+  margin: 5px 0;
+  text-align: center;
+  font-weight: 200;
+}
+
+h3 {
+  font-size: 140%;
+  line-height: 1.2;
+  border-bottom: 1px solid #aaa;
+  margin: 0;
+  padding-bottom: 15px;
+}
+
+ul {
+  padding: 20px 0 0 60px;
+  font-weight: 200;
+  line-height: 1.375;
+}
+
+.author h1 {
+  font-size: 170%;
+  font-weight: 200;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.author h3 {
+  font-weight: 100;
+  text-align: center;
+  font-size: 95%;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+  color: #44a4dd;
+}
+
+a:hover {
+  color: #66b5ff;
+}
+
+pre {
+  font-size: 60%;
+  line-height: 1.3;
+}
+
+.progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 1;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 3px;
+  background-color: #b4b4b4;
+
+  -webkit-transition: width 0.05s ease-out;
+  -moz-transition: width 0.05s ease-out;
+  -o-transition: width 0.05s ease-out;
+  transition: width 0.05s ease-out;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 850px) {
+
+  body {
+    font-size: 70%;
+  }
+
+  .slide-content {
+    width: auto;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  h1 {
+    margin-top: 120px;
+  }
+
+  .prev, .prev:hover {
+    border-right-color: rgba(135, 135, 135, 0.5);
+  }
+
+  .next, .next:hover {
+    border-left-color: rgba(135, 135, 135, 0.5);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 50%;
+    overflow: hidden;
+  }
+
+  .slide-content {
+    padding: 10px;
+    margin-top: 10px;
+    height: 340px;
+  }
+
+  h1 {
+    margin-top: 50px;
+  }
+
+  ul {
+    padding-left: 25px;
+  }
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+  }
+
+  @page {
+    size: letter;
+  }
+
+  .hidden {
+    display: inline;
+  }
+
+  html {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  body {
+    margin: 0 auto !important;
+    border: 0;
+    padding: 0;
+    float: none !important;
+    overflow: visible;
+    background: none !important;
+    font-size: 52%;
+  }
+
+  .progress, .controls {
+    display: none;
+  }
+
+  .slide {
+    position: static;
+  }
+
+  .slide-content {
+    border: 1px solid #222;
+    margin-top: 0;
+    margin-bottom: 40px;
+    height: 3.5in;
+    overflow: visible;
+  }
+
+  .slide:nth-child(even) {
+    /* 2 slides per page */
+    page-break-before: always;
+  }
+}
+
+/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+code {
+  font-size: 130%;
+}
+
+ul {
+  padding: 10px 0 10px 60px;
+}
+
+.slide {
+  background-color: white;
+}
+
+.slide-content {
+  width: 1000px;
+  overflow: visible;
+}
+
+.hljs-attr {
+  color: #0086b3;
+}
+
+  </style>
+</head>
+<body>
+    <div class="progress">
+    <div class="progress-bar"></div>
+  </div>
+
+  <div class="slide" id="slide-1">
+    <section class="slide-content"><h1 id="the-test-pyramid">The Test Pyramid</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-2">
+    <section class="slide-content"><h3 id="-_-_omar-_-_">@__omar__</h3>
+<ul>
+<li>Engineer at <a href="http://www.instructure.com/">Instructure</a></li>
+<li>Full-stack web dev</li>
+<li>Learnt these things the hard way</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-3">
+    <section class="slide-content"><h3 id="about-this-talk">About this talk</h3>
+<ul>
+<li>Basic principles of software testing</li>
+<li>Practical focus</li>
+<li>Real-world examples</li>
+<li>Emphasis on unit testing</li>
+<li>Goal: happiness!</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-4">
+    <section class="slide-content"><h1 id="disclaimer">Disclaimer</h1>
+<h2 id="this-is-all-just-some-guy-s-opinion">This is all just some guy&#39;s opinion</h2>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-5">
+    <section class="slide-content"><h1 id="first-things-first">First things first</h1>
+<h2 id="what-is-testing-">What is testing?</h2>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-6">
+    <section class="slide-content"><h3 id="what-is-testing-">What is testing?</h3>
+<ul>
+<li>Manual testing</li>
+<li>Automated testing</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-7">
+    <section class="slide-content"><h1 id="q-why-test-">Q: Why test?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-8">
+    <section class="slide-content"><h3 id="q-why-test-">Q: Why test?</h3>
+<p>A: To check that our software works!</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-9">
+    <section class="slide-content"><h3 id="q-why-write-automated-tests-">Q: Why write automated tests?</h3>
+<p>A: To check that our software works, faster!</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-10">
+    <section class="slide-content"><h1 id="are-there-other-benefits-to-automated-testing-">Are there other benefits to automated testing?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-11">
+    <section class="slide-content"><h3 id="automated-testing-">Automated testing:</h3>
+<ul>
+<li>allows us to spot regressions immediately</li>
+<li>helps us make changes faster and with confidence</li>
+<li>helps us write better software (we&#39;ll revisit this later)</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-12">
+    <section class="slide-content"><h1 id="how-do-we-write-automated-tests-">How do we write automated tests?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-13">
+    <section class="slide-content"><h3 id="example-testing-a-web-application">Example: testing a web application</h3>
+<ul>
+<li><strong>Automate the manual tests:</strong> browser automation</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h3 id="example-testing-a-web-application">Example: testing a web application</h3>
+<ul>
+<li>Browser automation: functional tests</li>
+<li><strong>Testing <code>GET /index.html</code></strong></li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-15">
+    <section class="slide-content"><h3 id="example-testing-a-web-application">Example: testing a web application</h3>
+<ul>
+<li>Browser automation: functional tests</li>
+<li>Individual requests: integration tests</li>
+<li><strong>Testing a javascript date formatting helper</strong></li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-16">
+    <section class="slide-content"><h3 id="example-testing-a-web-application">Example: testing a web application</h3>
+<ul>
+<li>Browser automation: functional tests</li>
+<li>Individual requests: integration tests</li>
+<li>Functions: unit tests</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-17">
+    <section class="slide-content"><h3 id="the-test-pyramid">The test pyramid</h3>
+<p><img src="images/testing-pyramid.png" alt="Test pyramid"></p>
+<p>from <a href="https://rubyplus.com/">rubyplus.com</a></p>
+</section>
+  </div>
+  <div class="slide hidden  " id="slide-18">
+    <section class="slide-content"><h3 id="examples-functional-tests">Examples: functional tests</h3>
+<pre><code class="lang-ruby">it <span class="hljs-string">"should show error message if wrong credentials are used"</span>, <span class="hljs-symbol">priority:</span> <span class="hljs-string">"2"</span> <span class="hljs-keyword">do</span>
+  get <span class="hljs-string">"/login"</span>
+  fill_in_login_form(<span class="hljs-string">"fake@user.com"</span>, <span class="hljs-string">"fakepass"</span>)
+  assert_flash_error_message(<span class="hljs-string">"Invalid username"</span>)
+<span class="hljs-keyword">end</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-19">
+    <section class="slide-content"><h3 id="examples-integration-tests">Examples: integration tests</h3>
+<pre><code class="lang-ruby">it <span class="hljs-string">"should inform the user CAS validation denied"</span> <span class="hljs-keyword">do</span>
+  stubby(<span class="hljs-string">"no\n\n"</span>)
+
+  get login_url
+  redirect_until(cas_redirect_url)
+
+  get <span class="hljs-string">'/login/cas'</span>, <span class="hljs-symbol">params:</span> {<span class="hljs-symbol">ticket:</span> <span class="hljs-string">'ST-abcd'</span>}
+  expect(response).to redirect_to(login_url)
+  expect(flash[<span class="hljs-symbol">:delegated_message</span>]).to match(<span class="hljs-regexp">/There was a problem logging in/</span>)
+<span class="hljs-keyword">end</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-20">
+    <section class="slide-content"><h3 id="examples-unit-tests">Examples: unit tests</h3>
+<pre><code class="lang-js">test(<span class="hljs-string">'calculateAppointmentGroupEventStatus gives "Reserved" string when reserved'</span>, () =&gt; {
+  calendarEvent.calendarEvent.reserved = <span class="hljs-literal">true</span>;
+  equal(calendarEvent.calculateAppointmentGroupEventStatus(), <span class="hljs-string">'Reserved'</span>);
+});</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-21">
+    <section class="slide-content"><h3 id="why-is-it-a-pyramid-">Why is it a pyramid?</h3>
+<p><img src="images/testing-pyramid.png" alt="Test pyramid"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-22">
+    <section class="slide-content"><h3 id="why-is-it-a-pyramid-">Why is it a pyramid?</h3>
+<ul>
+<li>More unit tests than integration tests</li>
+<li>More integration tests than functional tests</li>
+<li>More functional tests than manual tests</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-23">
+    <section class="slide-content"><h1 id="why-">Why?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-24">
+    <section class="slide-content"><h3 id="example-manual-test-failure">Example: manual test failure</h3>
+<blockquote>
+<p>Hey Omar, this login page isn&#39;t working!</p>
+</blockquote>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-25">
+    <section class="slide-content"><h3 id="example-functional-test-failure">Example: functional test failure</h3>
+<pre><code>Excuse an Assignment Gradebook Grid &#39;ex&#39; can be used to excuse assignments
+Failure/Error: expect(excused.text).to eq &#39;EX&#39;
+
+  expected: &quot;EX&quot;
+       got: &quot;submission commentsnEX&quot;</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-26">
+    <section class="slide-content"><h3 id="example-integration-test-failure">Example: integration test failure</h3>
+<pre><code>ConversationsController conversation should leave starryness alone when left out of update
+Failure/Error: expect(json[&quot;starred&quot;]).to be_truthy
+
+  expected: truthy value
+       got: nil</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-27">
+    <section class="slide-content"><h3 id="example-unit-test-failure">Example: unit test failure</h3>
+<pre><code>#add: 1 + 1 should equal 2
+Failure/Error: expect(result).to eq 2
+
+  expected: 2
+       got: 3</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-28">
+    <section class="slide-content"><h1 id="what-makes-a-good-unit-test-">What makes a good unit test?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-29">
+    <section class="slide-content"><h3 id="it-tests-one-thing">It tests one thing</h3>
+<pre><code class="lang-ruby">describe <span class="hljs-string">'#double'</span> <span class="hljs-keyword">do</span>
+  it <span class="hljs-string">'multiplies the input by 2'</span> <span class="hljs-keyword">do</span>
+    expect(subject.double(<span class="hljs-number">2</span>)).to eq(<span class="hljs-number">4</span>)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-30">
+    <section class="slide-content"><h3 id="it-tests-one-thing">It tests one thing</h3>
+<p><strong>No:</strong></p>
+<pre><code class="lang-ruby">it <span class="hljs-string">"should have an interesting state machine"</span> <span class="hljs-keyword">do</span>
+  enrollment_model
+  allow(@user).to receive(<span class="hljs-symbol">:dashboard_messages</span>).and_return(Message.none)
+  expect(@enrollment.state).to eql(<span class="hljs-symbol">:invited</span>)
+  @enrollment.accept
+  expect(@enrollment.state).to eql(<span class="hljs-symbol">:active</span>)
+  @enrollment.reject
+  expect(@enrollment.state).to eql(<span class="hljs-symbol">:rejected</span>)
+  Score.where(<span class="hljs-symbol">enrollment_id:</span> @enrollment).delete_all
+  @enrollment.destroy_permanently!
+  enrollment_model
+  @enrollment.complete
+  expect(@enrollment.state).to eql(<span class="hljs-symbol">:completed</span>)
+  @enrollment.destroy_permanently!
+  enrollment_model
+  @enrollment.reject
+  expect(@enrollment.state).to eql(<span class="hljs-symbol">:rejected</span>)
+  @enrollment.destroy_permanently!
+  enrollment_model
+  @enrollment.accept
+  expect(@enrollment.state).to eql(<span class="hljs-symbol">:active</span>)
+<span class="hljs-keyword">end</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-31">
+    <section class="slide-content"><h3 id="we-care-if-it-fails">We care if it fails</h3>
+<pre><code class="lang-ruby">describe <span class="hljs-string">'#double'</span> <span class="hljs-keyword">do</span>
+  it <span class="hljs-string">'multiplies the input by 2'</span> <span class="hljs-keyword">do</span>
+    expect(subject.double(<span class="hljs-number">2</span>)).to eq(<span class="hljs-number">4</span>)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-32">
+    <section class="slide-content"><h3 id="we-care-if-it-fails">We care if it fails</h3>
+<p><strong>No:</strong></p>
+<pre><code class="lang-ruby">describe <span class="hljs-string">'#action'</span> <span class="hljs-keyword">do</span>
+  it <span class="hljs-string">'returns an error response'</span> <span class="hljs-keyword">do</span>
+    expect(response.status).to eq(<span class="hljs-number">422</span>)
+    expect(response.body).to eq(<span class="hljs-string">'Oh no, there is something wrong with your input! You should probably check that you included all the parameters this endpoint expects.'</span>)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-33">
+    <section class="slide-content"><h3 id="it-s-not-affected-by-changes-elsewhere-in-the-code">It&#39;s not affected by changes elsewhere in the code</h3>
+<pre><code class="lang-ruby">describe <span class="hljs-string">'#score'</span> <span class="hljs-keyword">do</span>
+  let(<span class="hljs-symbol">:scoring_algorithm</span>) { <span class="hljs-string">'StubbedAlgorithm'</span> }
+  let(<span class="hljs-symbol">:expected_score</span>) { <span class="hljs-number">1</span> }
+
+  before <span class="hljs-keyword">do</span>
+    stubbed_algorithm = stubbed_scoring_algorithm.new(expected_score)
+    allow(scoring_service).to receive(<span class="hljs-symbol">:scoring_algorithm</span>).and_return(stubbed_algorithm)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'returns the result of the scoring_algorithm multiplied by points_possible'</span> <span class="hljs-keyword">do</span>
+    expect(scoring_service.score).to eq expected_score * session_item.points_possible
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-34">
+    <section class="slide-content"><h3 id="it-s-not-affected-by-changes-elsewhere-in-the-code">It&#39;s not affected by changes elsewhere in the code</h3>
+<p><strong>No:</strong></p>
+<pre><code class="lang-ruby">context <span class="hljs-string">"drop scores"</span> <span class="hljs-keyword">do</span>
+  before(<span class="hljs-symbol">:once</span>) <span class="hljs-keyword">do</span>
+    course_with_teacher
+    course_with_student(<span class="hljs-symbol">course:</span> @course)
+    @group = @course.assignment_groups.create!(<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-string">"some group"</span>, <span class="hljs-symbol">:group_weight</span> =&gt; <span class="hljs-number">50</span>, <span class="hljs-symbol">:rules</span> =&gt; <span class="hljs-string">"drop_lowest:1"</span>)
+    @assignment = @group.assignments.build(<span class="hljs-symbol">:title</span> =&gt; <span class="hljs-string">"some assignments"</span>, <span class="hljs-symbol">:points_possible</span> =&gt; <span class="hljs-number">10</span>)
+    @assignment.context = @course
+    @assignment.save!
+    @assignment2 = @group.assignments.build(<span class="hljs-symbol">:title</span> =&gt; <span class="hljs-string">"some assignment 2"</span>, <span class="hljs-symbol">:points_possible</span> =&gt; <span class="hljs-number">40</span>)
+    @assignment2.context = @course
+    @assignment2.save!
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">"should drop high scores for groups when specified"</span> <span class="hljs-keyword">do</span>
+    @enrollment = @user.enrollments.first
+    @group.update_attribute(<span class="hljs-symbol">:rules</span>, <span class="hljs-string">"drop_highest:1"</span>)
+    expect(@enrollment.reload.computed_current_score).to eql(<span class="hljs-keyword">nil</span>)
+    @submission = @assignment.grade_student(@user, <span class="hljs-symbol">grade:</span> <span class="hljs-string">"9"</span>, <span class="hljs-symbol">grader:</span> @teacher)
+    expect(@submission[<span class="hljs-number">0</span>].score).to eql(<span class="hljs-number">9.0</span>)
+    expect(@enrollment.reload.computed_current_score).to eql(<span class="hljs-number">90.0</span>)
+    @submission2 = @assignment2.grade_student(@user, <span class="hljs-symbol">grade:</span> <span class="hljs-string">"20"</span>, <span class="hljs-symbol">grader:</span> @teacher)
+    expect(@submission2[<span class="hljs-number">0</span>].score).to eql(<span class="hljs-number">20.0</span>)
+    expect(@enrollment.reload.computed_current_score).to eql(<span class="hljs-number">50.0</span>)
+    @group.update_attribute(<span class="hljs-symbol">:rules</span>, <span class="hljs-keyword">nil</span>)
+    expect(@enrollment.reload.computed_current_score).to eql(<span class="hljs-number">58.0</span>)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-35">
+    <section class="slide-content"><h3 id="we-re-not-stating-the-obvious">We&#39;re not stating the obvious</h3>
+<p><strong>No:</strong></p>
+<pre><code class="lang-js">it(<span class="hljs-string">'renders the component'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  expect(React.isValidElement(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> /&gt;</span>)</span>).to.be.true
+})</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-36">
+    <section class="slide-content"><h3 id="good-unit-test-checklist">Good unit test checklist</h3>
+<ul>
+<li>It tests one thing</li>
+<li>We care if it fails</li>
+<li>It&#39;s not affected by changes elsewhere in the code</li>
+<li>We&#39;re not stating the obvious</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-37">
+    <section class="slide-content"><h3 id="integration-test-checklist">Integration test checklist</h3>
+<ul>
+<li>Cannot be written as a unit test</li>
+<li>Tests a minimum number of units at the same time (ideally 2)</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-38">
+    <section class="slide-content"><h3 id="functional-test-checklist">Functional test checklist</h3>
+<ul>
+<li>Cannot be written as a unit test</li>
+<li>Cannot be written as an integration test</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-39">
+    <section class="slide-content"><h3 id="manual-test-checklist">Manual test checklist</h3>
+<p>Er... we haven&#39;t got around to automating this yet.</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-40">
+    <section class="slide-content"><h1 id="how-does-this-help-us-write-better-software-">How does this help us write better software?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-41">
+    <section class="slide-content"><h3 id="how-does-this-help-us-write-better-software-">How does this help us write better software?</h3>
+<ul>
+<li>Unit tests help us separate concerns</li>
+<li>If you&#39;re having trouble writing a good unit test, you might want to rethink
+your design</li>
+<li>If writing good unit tests is easy, your code is probably quite nice!</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-42">
+    <section class="slide-content"><h3 id="how-does-this-make-us-happy-">How does this make us happy?</h3>
+<ul>
+<li>Move fast, without breaking things!</li>
+<li>Have confidence in your code</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-43">
+    <section class="slide-content"><h3 id="final-words">Final words</h3>
+<ul>
+<li>It&#39;s an art, not a science</li>
+<li>Practicality beats purity</li>
+<li>Learn from open source!</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden author-slide" id="slide-44">
+    <section class="slide-content"><div class="author">
+  <h1 class="name">Omar Khan</h1>
+    <h3 class="url">
+      <a href="http://omarkhan.me/">http://omarkhan.me/</a>
+    </h3>
+</div>
+</section>
+  </div>
+
+
+
+  <script type="text/javascript">
+    /**
+ * Returns the current page number of the presentation.
+ */
+function currentPosition() {
+  return parseInt(document.querySelector('.slide:not(.hidden)').id.slice(6));
+}
+
+
+/**
+ * Navigates forward n pages
+ * If n is negative, we will navigate in reverse
+ */
+function navigate(n) {
+  var position = currentPosition();
+  var numSlides = document.getElementsByClassName('slide').length;
+
+  /* Positions are 1-indexed, so we need to add and subtract 1 */
+  var nextPosition = (position - 1 + n) % numSlides + 1;
+
+  /* Normalize nextPosition in-case of a negative modulo result */
+  nextPosition = (nextPosition - 1 + numSlides) % numSlides + 1;
+
+  document.getElementById('slide-' + position).classList.add('hidden');
+  document.getElementById('slide-' + nextPosition).classList.remove('hidden');
+
+  updateProgress();
+  updateURL();
+  updateTabIndex();
+}
+
+
+/**
+ * Updates the current URL to include a hashtag of the current page number.
+ */
+function updateURL() {
+  try {
+    window.history.replaceState({} , null, '#' + currentPosition());
+  } catch (e) {
+    window.location.hash = currentPosition();
+  }
+}
+
+
+/**
+ * Sets the progress indicator.
+ */
+function updateProgress() {
+  var progressBar = document.querySelector('.progress-bar');
+
+  if (progressBar !== null) {
+    var numSlides = document.getElementsByClassName('slide').length;
+    var position = currentPosition() - 1;
+    var percent = (numSlides === 1) ? 100 : 100 * position / (numSlides - 1);
+    progressBar.style.width = percent.toString() + '%';
+  }
+}
+
+
+/**
+ * Removes tabindex property from all links on the current slide, sets
+ * tabindex = -1 for all links on other slides. Prevents slides from appearing
+ * out of control.
+ */
+function updateTabIndex() {
+  var allLinks = document.querySelectorAll('.slide a');
+  var position = currentPosition();
+  var currentPageLinks = document.getElementById('slide-' + position).querySelectorAll('a');
+  var i;
+
+  for (i = 0; i < allLinks.length; i++) {
+    allLinks[i].setAttribute('tabindex', -1);
+  }
+
+  for (i = 0; i < currentPageLinks.length; i++) {
+    currentPageLinks[i].removeAttribute('tabindex');
+  }
+}
+
+/**
+ * Determines whether or not we are currently in full screen mode
+ */
+function isFullScreen() {
+  return document.fullscreenElement ||
+         document.mozFullScreenElement ||
+         document.webkitFullscreenElement ||
+         document.msFullscreenElement;
+}
+
+/**
+ * Toggle fullScreen mode on document element.
+ * Works on chrome (>= 15), firefox (>= 9), ie (>= 11), opera(>= 12.1), safari (>= 5).
+ */
+function toggleFullScreen() {
+  /* Convenient renames */
+  var docElem = document.documentElement;
+  var doc = document;
+
+  docElem.requestFullscreen =
+      docElem.requestFullscreen ||
+      docElem.msRequestFullscreen ||
+      docElem.mozRequestFullScreen ||
+      docElem.webkitRequestFullscreen.bind(docElem, Element.ALLOW_KEYBOARD_INPUT);
+
+  doc.exitFullscreen =
+      doc.exitFullscreen ||
+      doc.msExitFullscreen ||
+      doc.mozCancelFullScreen ||
+      doc.webkitExitFullscreen;
+
+  isFullScreen() ? doc.exitFullscreen() : docElem.requestFullscreen();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Update the tabindex to prevent weird slide transitioning
+  updateTabIndex();
+
+  // If the location hash specifies a page number, go to it.
+  var page = window.location.hash.slice(1);
+  if (page) {
+    navigate(parseInt(page) - 1);
+  }
+
+  document.onkeydown = function (e) {
+    var kc = e.keyCode;
+
+    // left, down, H, J, backspace, PgUp - BACK
+    // up, right, K, L, space, PgDn - FORWARD
+    // enter - FULLSCREEN
+    if (kc === 37 || kc === 40 || kc === 8 || kc === 72 || kc === 74 || kc === 33) {
+      navigate(-1);
+    } else if (kc === 38 || kc === 39 || kc === 32 || kc === 75 || kc === 76 || kc === 34) {
+      navigate(1);
+    } else if (kc === 13) {
+      toggleFullScreen();
+    }
+  };
+
+  if (document.querySelector('.next') && document.querySelector('.prev')) {
+    document.querySelector('.next').onclick = function (e) {
+      e.preventDefault();
+      navigate(1);
+    };
+
+    document.querySelector('.prev').onclick = function (e) {
+      e.preventDefault();
+      navigate(-1);
+    };
+  }
+});
+
+
+  </script>
+</body>
+</html>

@@ -139,6 +139,7 @@ pre {
   position: fixed;
   top: 0; left: 0; right: 0;
   height: 3px;
+  z-index: 1;
 }
 
 .progress-bar {
@@ -369,6 +370,7 @@ ul {
 
 .slide-content {
   width: 1000px;
+  overflow: visible;
 }
 
 .hljs-attr {
@@ -390,6 +392,7 @@ ul {
 <li><a href="pytest.html">pytest - because this ain&#39;t java</a></li>
 <li><a href="rails-microservices.html">Microservices with Rails</a></li>
 <li><a href="shell-scripts.html">Forget Ansible - just write shell scripts</a></li>
+<li><a href="test-pyramid.html">The Test Pyramid</a></li>
 </ul>
 </section>
   </div>
@@ -432,7 +435,11 @@ function navigate(n) {
  * Updates the current URL to include a hashtag of the current page number.
  */
 function updateURL() {
-  window.history.replaceState({} , null, '#' + currentPosition());
+  try {
+    window.history.replaceState({} , null, '#' + currentPosition());
+  } catch (e) {
+    window.location.hash = currentPosition();
+  }
 }
 
 
