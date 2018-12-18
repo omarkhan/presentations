@@ -12,3 +12,4 @@ style: style.css
 - [Microservices with Rails](rails-microservices.html)
 - [Forget Ansible - just write shell scripts](shell-scripts.html)
 - [The Test Pyramid](test-pyramid.html)
+- [Optimistic Updates](optimistic-updates.html)

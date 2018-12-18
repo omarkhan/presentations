@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Introduction to Flask</title>
+  <title>Optimistic Updates</title>
   <style type="text/css">
     body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -395,139 +395,181 @@ ul {
   </div>
 
   <div class="slide" id="slide-1">
-    <section class="slide-content"><h1 id="introduction-to-flask">Introduction to Flask</h1>
+    <section class="slide-content"><h1 id="optimistic-updates">Optimistic Updates</h1>
 </section>
   </div>
   <div class="slide hidden" id="slide-2">
-    <section class="slide-content"><h3 id="-_-_omar-_-_">@__omar__</h3>
+    <section class="slide-content"><h3 id="who-am-i-">Who am I?</h3>
 <ul>
-<li>Lead backend developer at <a href="http://pocketplaylab.com/">Pocket PlayLab</a></li>
-<li>Python developer for the last 6 years</li>
-<li>Used Flask in production, briefly</li>
+<li>Engineer at <a href="http://www.instructure.com/">Instructure</a> on Assessments</li>
+<li>Not an expert, take this with a grain of salt, YMMV, etc.</li>
 </ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-3">
-    <section class="slide-content"><h1 id="what-is-flask-">What is Flask?</h1>
+    <section class="slide-content"><h1 id="optimistic-updates">Optimistic Updates</h1>
+<h2 id="er-what-">Er, what?</h2>
 </section>
   </div>
   <div class="slide hidden" id="slide-4">
-    <section class="slide-content"><h3 id="what-flask-is">What Flask is</h3>
-<ul>
-<li>Web microframework</li>
-<li>Routing</li>
-<li>Templating (jinja2)</li>
-<li>Sessions</li>
-</ul>
+    <section class="slide-content"><h1 id="first-some-examples-">First, some examples.</h1>
+<h2 id="what-problem-are-we-trying-to-solve-">What problem are we trying to solve?</h2>
 </section>
   </div>
-  <div class="slide hidden" id="slide-5">
-    <section class="slide-content"><h3 id="what-flask-is-not">What Flask is not</h3>
-<ul>
-<li>Full-featured</li>
-<li>No ORM</li>
-<li>No auth</li>
-<li>No admin panel</li>
-<li>But extensions exist for all of these and more</li>
-<li>Consider using django if you know you will need these features</li>
-</ul>
+  <div class="slide hidden  image" id="slide-5">
+    <section class="slide-content"><p><img src="images/jira-create-button.gif" alt="JIRA create button"></p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-6">
-    <section class="slide-content"><h3 id="routing">Routing</h3>
-<pre><code class="lang-python"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask
-app = Flask(__name__)
-
-<span class="hljs-meta">@app.route("/")</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span>:</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-string">"Hello World!"</span>
-
-<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
-    app.run()</code></pre>
+  <div class="slide hidden  image" id="slide-6">
+    <section class="slide-content"><p><img src="images/jira-create-issue.gif" alt="JIRA create issue"></p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-7">
-    <section class="slide-content"><h3 id="templates">Templates</h3>
-<pre><code>/application.py
-/templates
-    /hello.html</code></pre>
-<pre><code class="lang-python"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> render_template
-
-<span class="hljs-meta">@app.route('/hello/')</span>
-<span class="hljs-meta">@app.route('/hello/&lt;name&gt;')</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">hello</span><span class="hljs-params">(name=None)</span>:</span>
-    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'hello.html'</span>, name=name)</code></pre>
-<pre><code class="lang-xml"><span class="hljs-meta">&lt;!doctype html&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Hello from Flask<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-{% if name %}
-  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello {{ name }}!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
-{% else %}
-  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello World!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
-{% endif %}</code></pre>
+  <div class="slide hidden  image" id="slide-7">
+    <section class="slide-content"><p><img src="images/jira-add-delete-comment.gif" alt="JIRA add and delete comment"></p>
 </section>
   </div>
   <div class="slide hidden" id="slide-8">
-    <section class="slide-content"><h3 id="testing">Testing</h3>
-<pre><code class="lang-python"><span class="hljs-keyword">import</span> unittest
-<span class="hljs-keyword">from</span> application <span class="hljs-keyword">import</span> app
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloWorldTest</span><span class="hljs-params">(unittest.TestCase)</span>:</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setUp</span><span class="hljs-params">(self)</span>:</span>
-        self.client = app.test_client()
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_hello</span><span class="hljs-params">(self)</span>:</span>
-        response = self.client.get(<span class="hljs-string">'/hello'</span>)
-        self.assertEqual(response.data, <span class="hljs-string">'Hello World!'</span>)</code></pre>
+    <section class="slide-content"><h1 id="notice-anything-">Notice anything?</h1>
 </section>
   </div>
   <div class="slide hidden" id="slide-9">
-    <section class="slide-content"><h1 id="the-good">The good</h1>
+    <section class="slide-content"><h3 id="notice-anything-">Notice anything?</h3>
+<ul>
+<li>Slow!</li>
+<li>OK I throttled the network, but still.</li>
+</ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-10">
-    <section class="slide-content"><p><img src="http://flask.pocoo.org/docs/0.10/_images/debugger.png" alt="Flask debugger"></p>
+    <section class="slide-content"><h3 id="how-does-that-feel-">How does that feel?</h3>
+<ul>
+<li>Frustrating</li>
+<li>Breaks my train of thought</li>
+<li>Feels disrespectful. My time is valuable!</li>
+</ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-11">
-    <section class="slide-content"><h1 id="the-bad">The bad</h1>
+    <section class="slide-content"><h3 id="these-examples-are-of-pessimistic-updates-">These examples are of &quot;pessimistic&quot; updates.</h3>
+<p>Q: Why pessimistic?</p>
 </section>
   </div>
   <div class="slide hidden" id="slide-12">
-    <section class="slide-content"><h3 id="request-context">Request context</h3>
-<p>&quot;Certain objects in Flask are global objects, but not of the usual kind. These
-objects are actually proxies to objects that are local to a specific context.&quot;</p>
-<pre><code class="lang-python"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> request
-
-<span class="hljs-meta">@app.route('/hello', method='POST')</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span>:</span>
-    <span class="hljs-keyword">assert</span> request.path == <span class="hljs-string">'/hello'</span>
-    <span class="hljs-keyword">assert</span> request.method == <span class="hljs-string">'POST'</span></code></pre>
-<p>Seriously?!</p>
+    <section class="slide-content"><h3 id="these-examples-are-of-pessimistic-updates-">These examples are of &quot;pessimistic&quot; updates.</h3>
+<p>Q: Why pessimistic?</p>
+<p>A: Because they don&#39;t let the user do anything until the request completes. They
+   assume that the request will fail, which is kinda pessimistic.</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-13">
-    <section class="slide-content"><h3 id="request-context">Request context</h3>
+  <div class="slide hidden  image" id="slide-13">
+    <section class="slide-content"><p><img src="images/marvin.png" alt="Marvin: &quot;This will all end in tears, I know it&quot;"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h1 id="what-do-optimistic-updates-look-like-">What do &quot;optimistic&quot; updates look like?</h1>
+<h2 id="more-examples-">More examples.</h2>
+</section>
+  </div>
+  <div class="slide hidden  image" id="slide-15">
+    <section class="slide-content"><p><img src="images/jira-optimistic-updates.gif" alt="JIRA move card"></p>
+</section>
+  </div>
+  <div class="slide hidden  image" id="slide-16">
+    <section class="slide-content"><p><img src="images/trello.gif" alt="Trello"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-17">
+    <section class="slide-content"><h1 id="how-does-that-feel-">How does that feel?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-18">
+    <section class="slide-content"><h3 id="how-does-that-feel-">How does that feel?</h3>
 <ul>
-<li>Request context and sessions implemented as thread-locals</li>
-<li>Not a nice design decision</li>
-<li>Global state</li>
-<li>Makes it harder to write tests and other code that doesn&#39;t run in a
-request-response cycle<ul>
-<li>Use a fake request context</li>
+<li>Fast</li>
+<li>Responsive</li>
+<li>Pleasant</li>
+<li>Respectful of the user&#39;s time</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-19">
+    <section class="slide-content"><h3 id="how-does-that-feel-">How does that <strong>feel</strong>?</h3>
+<ul>
+<li>I&#39;m throttling the network just like I did in the other examples</li>
+<li>But the UI still feels very snappy</li>
+<li>All about <strong>perceived</strong> performance</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-20">
+    <section class="slide-content"><h1 id="q-why-do-we-call-these-optimistic-updates-">Q: Why do we call these &quot;optimistic&quot; updates?</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-21">
+    <section class="slide-content"><p>Q: Why do we call these &quot;optimistic&quot; updates?</p>
+<p>A: Because they assume that the request will succeed, and update the UI immediately as if it had, without waiting for a response.</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-22">
+    <section class="slide-content"><h3 id="what-happens-if-the-request-actually-does-fail-">What happens if the request actually does fail?</h3>
+<ul>
+<li>This is where things get tricky</li>
+<li>Notify the user that something went wrong</li>
+<li>Roll back the change?</li>
+<li>Try to fetch the latest state from the backend</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden  image" id="slide-23">
+    <section class="slide-content"><p><img src="images/trello-connection-interrupted.gif" alt="Trello connection interrupted"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-24">
+    <section class="slide-content"><h3 id="other-concerns">Other concerns</h3>
+<ul>
+<li>Race conditions: if requests fire immediately, what if the backend gets a
+request that doesn&#39;t make sense yet?</li>
+<li>Possible solution: queue requests</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden  image" id="slide-25">
+    <section class="slide-content"><p><img src="images/jira-race-condition.gif" alt="JIRA race condition"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-26">
+    <section class="slide-content"><h1 id="-code-examples-https-github-com-omarkhan-optimistic-updates-examples-"><a href="https://github.com/omarkhan/optimistic-updates-examples">Code examples</a></h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-27">
+    <section class="slide-content"><h1 id="don-t-use-this-everywhere">Don&#39;t use this everywhere</h1>
+<ul>
+<li>It can make implementation harder. Error handling can be tricky</li>
+<li>Pessimistic updates are still better in some cases<ul>
+<li>When a request actually does fail a lot. In this case pessimism is justified</li>
+<li>&quot;High-value&quot; interactions, when the user really cares about the outcome and
+is willing to wait a few seconds. Sending a bank transfer, for example</li>
 </ul>
 </li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-14">
-    <section class="slide-content"><h3 id="tl-dr">tl;dr</h3>
+  <div class="slide hidden" id="slide-28">
+    <section class="slide-content"><h1 id="final-words">Final words</h1>
 <ul>
-<li>Good for prototyping small webapps</li>
-<li>For anything bigger, use django</li>
+<li>This stuff matters</li>
+<li>It&#39;s the difference between software people use because they have to (JIRA)
+and becaues they want to (Trello)</li>
+<li>It&#39;s an engineering concern! Design gives us beautiful mockups, but they
+don&#39;t convey how it <strong>feels</strong></li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden author-slide" id="slide-15">
+  <div class="slide hidden" id="slide-29">
+    <section class="slide-content"><h1 id="questions-">Questions?</h1>
+</section>
+  </div>
+  <div class="slide hidden author-slide" id="slide-30">
     <section class="slide-content"><div class="author">
   <h1 class="name">Omar Khan</h1>
     <h3 class="url">
