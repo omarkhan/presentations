@@ -13,3 +13,4 @@ style: style.css
 - [Forget Ansible - just write shell scripts](shell-scripts.html)
 - [The Test Pyramid](test-pyramid.html)
 - [Optimistic Updates](optimistic-updates.html)
+- [i18n and l10n: common mistakes](common-i18n-mistakes.html)
